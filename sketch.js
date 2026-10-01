@@ -1,38 +1,47 @@
 const r = require("raylib");
-const geometry = require("./geometry");
 
-const windowWidth = 800;
-const windowHeight = 600;
-const windowTitle = "Intersecting Circles";
+const window = {
+	width: 800,
+	height: 600,
+	title: "Intersecting Circles",
+};
 
 const FPS = 60;
 
 function running() { return !r.WindowShouldClose(); }
 
 function setup() {
-	r.InitWindow(windowWidth, windowHeight, windowTitle);
+	r.InitWindow(window.width, window.height, window.title);
 	r.SetTargetFPS(FPS);
 }
 
-const X1 = 300;
-const Y1 = 100;
-const R1 = 30;
+const circleOne = {
+	x: 300,
+	y: 100,
+	radius: 30,
+};
 
-const X2 = 200;
-const Y2 = 350;
-const R2 = 50;
+const circleTwo = {
+	x: 200,
+	y: 350,
+	radius: 50,
+};
 
-function drawCircles(circlesColor) {
-	r.DrawCircle(X1, Y1, R1, circlesColor);
-	r.DrawCircle(X2, Y2, R2, circlesColor);
+function drawCircleObject(object, color) {
+	r.DrawCircleV(object, object.radius, color);
+}
+
+function drawCircles(color) {
+	drawCircleObject(circleOne, color);
+	drawCircleObject(circleTwo, color);
 }
 
 function getSumOfRadii() {
-	return R1 + R2;
+	return circleOne.radius + circleTwo.radius;
 }
 
 function areCirclesIntersecting() {
-	return getSumOfRadii() > geometry.getDistance(X1, Y1, X2, Y2);
+	return getSumOfRadii() > r.Vector2Distance(circleOne, circleTwo);
 }
 
 function getColorBasedOnIntersection(areCirclesIntersecting) {
